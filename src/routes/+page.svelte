@@ -2,12 +2,7 @@
   import Fa from 'svelte-fa'
   import { onDestroy, onMount } from 'svelte'
 
-  import {
-    WS_URL,
-    fetchSpotify,
-    fetchDiscord,
-    fetchPosts
-  } from '$lib/api.js'
+  import { WS_URL, fetchPosts } from '$lib/api.js'
   import { features } from '$lib/features.js'
   import { getClosestCover } from '$lib/utils.js'
 
@@ -36,14 +31,6 @@
   let ws: WebSocket | null = null
 
   onMount(() => {
-    fetchSpotify().then(data => {
-      spotify = data
-    })
-
-    fetchDiscord().then(data => {
-      discord = data
-    })
-
     fetchPosts(3).then(data => {
       posts = data
     })
