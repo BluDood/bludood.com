@@ -6,13 +6,10 @@ import type {
 } from '$types/API.js'
 import type { BlogPost } from '$types/blog.js'
 
-export const useDev = false
+const HOST = 'api.bludood.com'
 
-const PROD_HOST = 'api.bludood.com'
-const DEV_HOST = 'dev.api.bludood.com'
-
-export const API_URL = `https://${useDev ? DEV_HOST : PROD_HOST}`
-export const WS_URL = `wss://${useDev ? DEV_HOST : PROD_HOST}/ws`
+export const API_URL = `https://${HOST}`
+export const WS_URL = `wss://${HOST}/ws`
 
 export async function fetchSpotify(): Promise<FilteredSpotifyCurrentPlayingResponse | null> {
   const res = await axios.get(`${API_URL}/spotify`, {
