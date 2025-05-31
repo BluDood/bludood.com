@@ -28,6 +28,7 @@
     faSpotify,
     faBluesky
   } from '@fortawesome/free-brands-svg-icons'
+  import { faPause } from '@fortawesome/free-solid-svg-icons'
 
   let spotify: FilteredSpotifyCurrentPlayingResponse | null = null
   let discord: DiscordPresenceResponse | null = null
@@ -60,6 +61,10 @@
     }
 
     ws.onerror = e => console.error(e)
+
+    setInterval(() => {
+      if (spotify?.playing) spotify.duration.current += 500
+    }, 500)
   })
 
   onDestroy(() => ws?.close())
@@ -135,6 +140,17 @@
             <div class="spotify">
               <div class="icon">
                 <Fa icon={faSpotify} />
+              </div>
+              <div class="paused" style:opacity={spotify.playing ? 0 : 1}>
+                <Fa icon={faPause} />
+              </div>
+              <div class="progress">
+                <div
+                  class="bar"
+                  style:width="{(spotify.duration.current /
+                    spotify.duration.total) *
+                    100}%"
+                ></div>
               </div>
               <img
                 src={getClosestCover(spotify, 50)}
@@ -325,6 +341,7 @@
 
   .spotify {
     position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -349,6 +366,14 @@
     width: 50px;
     height: 50px;
     border-radius: 5px;
+  }
+
+  .spotify .paused {
+    position: absolute;
+    bottom: 0;
+    right: 2px;
+    margin: 10px;
+    transition: opacity 200ms ease;
   }
 
   .spotify .info {
@@ -390,6 +415,23 @@
 
   .spotify .info .artists a:last-child::after {
     content: '';
+  }
+
+  .spotify .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+  }
+
+  .spotify .progress .bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: var(--accent);
+    transition: width 200ms ease;
   }
 
   .discord {
