@@ -139,10 +139,12 @@
                     100}%"
                 ></div>
               </div>
-              <img
-                src={getClosestCover(spotify, 50)}
-                alt="Cover for currently playing track"
-              />
+              <a href={spotify.album.url} target="_blank" class="cover">
+                <img
+                  src={getClosestCover(spotify, 50)}
+                  alt="{spotify.album.name} cover"
+                />
+              </a>
               <div class="info">
                 <a
                   class="trackName"
@@ -349,7 +351,13 @@
     color: var(--spotify);
   }
 
-  .spotify img {
+  .spotify .cover {
+    all: unset;
+    display: flex;
+    cursor: pointer;
+  }
+
+  .spotify .cover img {
     width: 50px;
     height: 50px;
     border-radius: 5px;
