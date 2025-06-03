@@ -382,7 +382,7 @@
   }
 
   .spotify .info .artists {
-    line-height: 12px;
+    margin-top: -6px;
     width: 220px;
     overflow: hidden;
     text-overflow: ellipsis;
