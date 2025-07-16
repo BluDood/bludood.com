@@ -162,7 +162,7 @@
             </div>
           </AnimateHeight>
         {/if}
-        {#if discord}
+        {#if discord && discord.status !== 'offline'}
           <AnimateHeight>
             <div class="discord">
               <div class="icon">
