@@ -1,9 +1,13 @@
 <script lang="ts">
-  export let defer = false
+  interface Props {
+    defer?: boolean
+  }
+
+  let { defer = false }: Props = $props()
 </script>
 
 <div class="outer" class:defer>
-  <div class="loader" />
+  <div class="loader"></div>
 </div>
 
 <style>

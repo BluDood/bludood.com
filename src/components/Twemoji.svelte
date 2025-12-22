@@ -1,16 +1,22 @@
 <script lang="ts">
-  export let emoji = '👋'
-  export let space = false
-  export let dim = 22
+  interface Props {
+    emoji: string
+    space?: boolean
+    dim?: number
+  }
+
+  const { emoji, space = false, dim = 22 }: Props = $props()
 
   const toCodePoint = (emoji: string) =>
     Array.from(emoji)
       .map(c => c.codePointAt(0)!.toString(16))
       .join('-')
 
-  const src = `https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/svg/${toCodePoint(
-    emoji
-  )}.svg`
+  const src = $derived(
+    `https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/svg/${toCodePoint(
+      emoji
+    )}.svg`
+  )
 </script>
 
 <span aria-hidden="true">

@@ -7,10 +7,7 @@
     if (index === -1) {
       $features = [...$features, feature]
     } else {
-      $features = [
-        ...$features.slice(0, index),
-        ...$features.slice(index + 1)
-      ]
+      $features = [...$features.slice(0, index), ...$features.slice(index + 1)]
     }
     saveFeatures()
   }
@@ -33,7 +30,7 @@
     <input
       type="checkbox"
       checked={$features.includes('background-animation')}
-      on:change={() => toggleFeature('background-animation')}
+      onchange={() => toggleFeature('background-animation')}
     />
   </div>
 
@@ -42,7 +39,7 @@
     <input
       type="checkbox"
       checked={$features.includes('holidays')}
-      on:change={() => toggleFeature('holidays')}
+      onchange={() => toggleFeature('holidays')}
     />
   </div>
 
@@ -51,7 +48,7 @@
     <input
       type="checkbox"
       checked={$features.includes('new-years')}
-      on:change={() => toggleFeature('new-years')}
+      onchange={() => toggleFeature('new-years')}
     />
   </div>
 
@@ -60,19 +57,19 @@
     <input
       type="checkbox"
       checked={$features.includes('birthday')}
-      on:change={() => toggleFeature('birthday')}
+      onchange={() => toggleFeature('birthday')}
     />
   </div>
 
-  <button on:click={resetFeatures}>Reset</button>
+  <button onclick={resetFeatures}>Reset</button>
 </div>
 
 <div class="card">
   <h2>Analytics Popup</h2>
-  <button on:click={() => analyticsShown.set(true)}>Show</button>
-  <button on:click={() => analyticsShown.set(false)}>Hide</button>
+  <button onclick={() => analyticsShown.set(true)}>Show</button>
+  <button onclick={() => analyticsShown.set(false)}>Hide</button>
   <button
-    on:click={() => {
+    onclick={() => {
       localStorage.removeItem('analytics')
       analyticsShown.set(true)
     }}>Reset choice</button

@@ -13,16 +13,19 @@
   } from '@fortawesome/free-solid-svg-icons'
   import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 
-  let sent = false
-  let loading = false
-  let status = {
-    status: '',
+  let sent = $state(false)
+  let loading = $state(false)
+  let status: {
+    status: 'info' | 'error' | 'success'
+    message: string
+  } = $state({
+    status: 'info',
     message: ''
-  }
+  })
 
-  let name = ''
-  let email = ''
-  let message = ''
+  let name = $state('')
+  let email = $state('')
+  let message = $state('')
 
   async function send() {
     if (loading || sent) return
@@ -123,11 +126,8 @@
         type="email"
         placeholder="Email"
       />
-      <textarea
-        bind:value={message}
-        disabled={loading}
-        placeholder="Message"
-      />
+      <textarea bind:value={message} disabled={loading} placeholder="Message"
+      ></textarea>
       {#if status.message}
         <div data-status={status.status} class="message">
           <Fa
@@ -140,7 +140,7 @@
           <span>{status.message}</span>
         </div>
       {/if}
-      <button on:click={send} disabled={loading}>
+      <button onclick={send} disabled={loading}>
         {#if loading}
           <div class="load"><Fa icon={faSpinner} /></div>
         {:else}

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { page } from '$app/stores'
+  import { page } from '$app/state'
   import { API_URL } from '$lib/api.js'
 
-  $: hidden = $page.url.pathname === '/'
+  let hidden = $derived(page.url.pathname === '/')
 </script>
 
 <nav>

@@ -1,5 +1,9 @@
 <script lang="ts">
-  export let status: 'online' | 'idle' | 'dnd' | 'mobile' | 'offline'
+  interface Props {
+    status: 'online' | 'idle' | 'dnd' | 'mobile' | 'offline'
+  }
+
+  let { status }: Props = $props()
 </script>
 
 {#if status === 'online'}
@@ -22,11 +26,7 @@
   </svg>
 {:else if status === 'idle'}
   <svg width="16" height="16" viewBox="0 0 16 16">
-    <mask
-      id="mask-idle"
-      maskContentUnits="objectBoundingBox"
-      viewBox="0 0 1 1"
-    >
+    <mask id="mask-idle" maskContentUnits="objectBoundingBox" viewBox="0 0 1 1">
       <circle fill="white" cx="0.5" cy="0.5" r="0.5" />
       <circle fill="black" cx="0.25" cy="0.25" r="0.375" />
     </mask>
@@ -41,11 +41,7 @@
   </svg>
 {:else if status === 'dnd'}
   <svg width="16" height="16" viewBox="0 0 16 16">
-    <mask
-      id="mask-dnd"
-      maskContentUnits="objectBoundingBox"
-      viewBox="0 0 1 1"
-    >
+    <mask id="mask-dnd" maskContentUnits="objectBoundingBox" viewBox="0 0 1 1">
       <circle fill="white" cx="0.5" cy="0.5" r="0.5" />
       <rect
         fill="black"

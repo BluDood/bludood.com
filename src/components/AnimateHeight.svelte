@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  let { children } = $props()
 
-  let component: HTMLDivElement
+  let component: HTMLDivElement | null = $state(null)
 
-  onMount(() => {
+  $effect(() => {
+    if (!component) return
+
     const height = component.offsetHeight
     component.style.animation = 'opacity 500ms ease'
 
@@ -13,13 +15,13 @@
     })
 
     setTimeout(() => {
-      component.style.animation = ''
+      component!.style.animation = ''
     }, 500)
   })
 </script>
 
 <div bind:this={component}>
-  <slot />
+  {@render children()}
 </div>
 
 <style>

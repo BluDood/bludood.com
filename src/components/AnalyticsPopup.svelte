@@ -4,7 +4,7 @@
   import { analyticsShown } from '$lib/stores'
   import { faClose } from '@fortawesome/free-solid-svg-icons'
 
-  let animating: boolean = false
+  let animating = $state(false)
 
   function close(acknowledged = true) {
     analyticsShown.set(false)
@@ -33,20 +33,20 @@
       ? 'Close analytics popup'
       : 'Analytics popup closed'}
     class="close"
-    on:click={() => close(false)}
+    onclick={() => close(false)}
     tabindex={$analyticsShown ? 0 : -1}
   >
     <Fa icon={faClose} />
   </button>
   <h2>This website uses privacy-respecting analytics.</h2>
   <p>
-    By continuing to use this website, you agree to be included in stats
-    about this website using Plausible.
+    By continuing to use this website, you agree to be included in stats about
+    this website using Plausible.
   </p>
   <div class="buttons">
     <button
       class="btn primary"
-      on:click={() => close()}
+      onclick={() => close()}
       tabindex={$analyticsShown ? 0 : -1}
       aria-label={$analyticsShown ? 'I agree' : 'Analytics popup closed'}
     >

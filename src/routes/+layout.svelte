@@ -1,4 +1,6 @@
 <script lang="ts">
+  const { children } = $props()
+
   import '../global.css'
   import '@fontsource/noto-sans/700.css'
   import '@fontsource/noto-sans/600.css'
@@ -31,5 +33,5 @@
 <AnalyticsPopup />
 
 <Navbar />
-<slot />
+{@render children()}
 <Footer />

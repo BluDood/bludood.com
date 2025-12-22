@@ -28,7 +28,7 @@
 <svelte:window on:mousemove={handleMouseMove} />
 
 {#if !disabled}
-  <div bind:this={background} />
+  <div bind:this={background}></div>
 {/if}
 
 <style>

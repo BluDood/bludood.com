@@ -81,7 +81,13 @@
   <h1>Projects</h1>
   <div class="list">
     {#each projects as project}
-      <a class="project" href={project.links?.[0].link} target="_blank">
+      <button
+        class="project"
+        onclick={e => {
+          e.stopPropagation()
+          window.open(project.links[0].link)
+        }}
+      >
         <span class="name">{project.name}</span>
         <span class="description">{project.description}</span>
         <div class="links">
@@ -91,7 +97,7 @@
             </a>
           {/each}
         </div>
-      </a>
+      </button>
     {/each}
   </div>
 </div>

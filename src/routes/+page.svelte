@@ -25,9 +25,9 @@
   } from '@fortawesome/free-brands-svg-icons'
   import { faPause } from '@fortawesome/free-solid-svg-icons'
 
-  let spotify: FilteredSpotifyCurrentPlayingResponse | null = null
-  let discord: DiscordPresenceResponse | null = null
-  let posts: BlogPost[] | null = null
+  let spotify: FilteredSpotifyCurrentPlayingResponse | null = $state(null)
+  let discord: DiscordPresenceResponse | null = $state(null)
+  let posts: BlogPost[] | null = $state(null)
   let ws: WebSocket | null = null
 
   onMount(() => {
@@ -68,7 +68,7 @@
       src="/assets/images/BluDood_128.png"
       alt="BluDood Avatar"
       aria-hidden="true"
-      on:click={e => {
+      onclick={e => {
         e.currentTarget.animate(
           [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }],
           {
@@ -146,11 +146,7 @@
                 />
               </a>
               <div class="info">
-                <a
-                  class="trackName"
-                  target="_blank"
-                  href={spotify.trackURL}
-                >
+                <a class="trackName" target="_blank" href={spotify.trackURL}>
                   {spotify.name}
                 </a>
                 <span class="artists">
@@ -179,10 +175,7 @@
               </div>
               {#if discord.activities.length !== 0}
                 <div class="activity">
-                  <img
-                    src={discord.activities[0].assets.largeImage}
-                    alt=""
-                  />
+                  <img src={discord.activities[0].assets.largeImage} alt="" />
                   <div class="text">
                     <span class="bold">
                       {discord.activities[0].name ?? ''}
@@ -263,13 +256,6 @@
     font-weight: 600;
     display: flex;
     align-items: center;
-  }
-
-  .header p img {
-    height: 22px;
-    width: 22px;
-    margin-left: 10px;
-    vertical-align: middle;
   }
 
   .header .links {

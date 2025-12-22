@@ -3,10 +3,13 @@
   import { fetchPosts } from '$lib/api.js'
 
   import type { BlogPost } from '$types/blog.js'
+  import { onMount } from 'svelte'
 
-  let posts: BlogPost[] | null = null
+  let posts: BlogPost[] | null = $state(null)
 
-  fetchPosts().then(p => (posts = p))
+  onMount(async () => {
+    posts = await fetchPosts()
+  })
 </script>
 
 <svelte:head>
@@ -15,7 +18,6 @@
 </svelte:head>
 
 <h1>Posts</h1>
-
 {#if posts}
   <div class="posts">
     {#each posts as post}
