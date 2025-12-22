@@ -1,20 +1,19 @@
-import eslint from '@eslint/js'
-import svelte from 'eslint-plugin-svelte'
+import js from '@eslint/js'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
+import svelte from 'eslint-plugin-svelte'
+import { defineConfig, globalIgnores } from 'eslint/config'
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...svelte.configs['flat/recommended'],
+export default defineConfig([
+  globalIgnores(['node_modules/', 'build/', '.svelte-kit/']),
   {
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node
-      }
-    }
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    plugins: { js },
+    extends: ['js/recommended'],
+    languageOptions: { globals: globals.browser }
   },
+  tseslint.configs.recommended,
+  svelte.configs['flat/recommended'],
   {
     files: ['**/*.svelte'],
     languageOptions: {
@@ -24,13 +23,10 @@ export default tseslint.config(
     }
   },
   {
-    ignores: ['build/', '.svelte-kit/', 'dist/']
-  },
-  {
     rules: {
       'svelte/no-navigation-without-resolve': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       'svelte/require-each-key': 'off'
     }
   }
-)
+])
