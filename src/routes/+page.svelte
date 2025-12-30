@@ -29,8 +29,11 @@
   let discord: DiscordPresenceResponse | null = $state(null)
   let posts: BlogPost[] | null = $state(null)
   let ws: WebSocket | null = null
+  let mounted = false
 
   async function startWebsocket() {
+    if (!mounted) return
+
     if (ws) {
       ws.close()
       ws = null
@@ -58,6 +61,7 @@
     })
 
     ws.addEventListener('close', () => {
+      if (!mounted) return console.log('WebSocket closed')
       console.log('WebSocket closed, reconnecting in 1s...')
       setTimeout(() => {
         startWebsocket()
@@ -66,13 +70,18 @@
   }
 
   onMount(() => {
+    mounted = true
+
     fetchPosts(3).then(data => {
       posts = data
     })
 
     startWebsocket()
 
-    return () => ws?.close()
+    return () => {
+      mounted = false
+      ws?.close()
+    }
   })
 
   $effect(() => {
