@@ -1,6 +1,6 @@
 <script lang="ts">
   import Fa from 'svelte-fa'
-  import { onDestroy, onMount } from 'svelte'
+  import { onMount } from 'svelte'
 
   import { WS_URL, fetchPosts } from '$lib/api.js'
   import { features } from '$lib/features.js'
@@ -30,14 +30,19 @@
   let posts: BlogPost[] | null = $state(null)
   let ws: WebSocket | null = null
 
-  onMount(() => {
-    fetchPosts(3).then(data => {
-      posts = data
-    })
+  async function startWebsocket() {
+    if (ws) {
+      ws.close()
+      ws = null
+    }
 
     ws = new WebSocket(WS_URL)
 
-    ws.onmessage = event => {
+    ws.addEventListener('open', () => {
+      console.log('WebSocket open')
+    })
+
+    ws.addEventListener('message', event => {
       const data = JSON.parse(event.data)
 
       if (data.type === 'spotify') {
@@ -45,16 +50,38 @@
       } else if (data.type === 'discord') {
         discord = data.data as DiscordPresenceResponse
       }
-    }
+    })
 
-    ws.onerror = e => console.error(e)
+    ws.addEventListener('error', e => {
+      console.error(e)
+      ws?.close()
+    })
 
-    setInterval(() => {
-      if (spotify?.playing) spotify.duration.current += 500
-    }, 500)
+    ws.addEventListener('close', () => {
+      console.log('WebSocket closed, reconnecting in 1s...')
+      setTimeout(() => {
+        startWebsocket()
+      }, 1000)
+    })
+  }
+
+  onMount(() => {
+    fetchPosts(3).then(data => {
+      posts = data
+    })
+
+    startWebsocket()
+
+    return () => ws?.close()
   })
 
-  onDestroy(() => ws?.close())
+  $effect(() => {
+    const interval = setInterval(() => {
+      if (spotify?.playing) spotify.duration.current += 500
+    }, 500)
+
+    return () => clearInterval(interval)
+  })
 </script>
 
 <svelte:head>
@@ -146,7 +173,11 @@
                 />
               </a>
               <div class="info">
-                <a class="trackName" target="_blank" href={spotify.trackURL}>
+                <a
+                  class="trackName"
+                  target="_blank"
+                  href={spotify.trackURL}
+                >
                   {spotify.name}
                 </a>
                 <span class="artists">
@@ -175,7 +206,10 @@
               </div>
               {#if discord.activities.length !== 0}
                 <div class="activity">
-                  <img src={discord.activities[0].assets.largeImage} alt="" />
+                  <img
+                    src={discord.activities[0].assets.largeImage}
+                    alt=""
+                  />
                   <div class="text">
                     <span class="bold">
                       {discord.activities[0].name ?? ''}
